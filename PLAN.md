@@ -6,7 +6,7 @@ dependencias de datos pero el código de 3, 4 y 5 se puede escribir en paralelo.
 
 ---
 
-## Etapa 0 — Preparación del repo (≈10 min)
+## Etapa 0 — Preparación del repo · **HECHO** (2026-10-22)
 
 | # | Tarea | Verificación |
 |---|---|---|
@@ -18,7 +18,13 @@ dependencias de datos pero el código de 3, 4 y 5 se puede escribir en paralelo.
 | 0.5b | Scaffold de Astro en `site/` (`npm create astro`, modo estático, versiones fijadas) | `npm run build` en verde con una página vacía |
 | 0.6 | Commit `chore: bootstrap SDD (spec, plan, tooling)` con `SPEC.md` + `PLAN.md` + tooling | — |
 
-**Acción irreversible:** 0.1 crea un repo **público** en tu cuenta, como decidiste.
+**Resultado:** fork en https://github.com/guillermosequera/awesome-scalability-es con
+`master` sincronizado (`c9ca9f2`) y rama `es` publicada. El README del repo se verificó
+byte-idéntico a la copia con la que se construyó el índice, así que `data/index.json`
+sigue vigente. El entorno vive en `.venv/` con `pyproject.toml`.
+
+Nota: `git init` + `fetch` + `checkout -B` en vez de `git clone`, porque el directorio ya
+contenía trabajo sin versionar y `clone` habría fallado.
 
 ---
 
@@ -82,9 +88,10 @@ Hecho el 2026-10-21. Pipeline de tres pasadas, cada una medida contra el corpus 
 | 4.5 | Reanudación, `--limit`, `--only`, `--force`, `--no-browser`, `--no-wayback`, `--urls` | hecho |
 | 4.6 | `--bundle N` → lotes de texto listos para cualquier modelo | hecho |
 | 4.7 | `extracted/` en `.gitignore` desde el primer commit | hecho |
-| 4.8 | `docs/formato-ficha.md`: esquema de ficha esperado, para que las fichas encajen en el sitio venga el resumen de donde venga | pendiente |
+| 4.8 | `docs/formato-ficha.md`: esquema de ficha esperado, para que las fichas encajen en el sitio venga el resumen de donde venga | hecho |
 | 4.9 | Tests: fixtures HTML locales, clasificación de estados, reanudación, selección de snapshot. Cero red real | pendiente |
-| 4.10 | Pasada completa sobre los 861 artículos (1,5–2,5 h, reanudable) | pendiente |
+| 4.10 | Pasada completa sobre los 861 artículos | **hecho** — 782 ok (91 %), 20 blocked, 15 error, 11 dead, 7 poor |
+| 4.11 | Guardado incremental: cada texto en el acto, manifiesto cada 10 con reemplazo atómico | hecho — una interrupción ya no tira la corrida entera |
 
 **El resumen queda fuera de la Fase 1.** Lo genera el usuario con el modelo que elija a
 partir de `extracted/bundles/`.
