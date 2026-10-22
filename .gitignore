@@ -1,0 +1,13 @@
+# entorno y cache locales
+.venv/
+__pycache__/
+.cache/
+*.egg-info/
+
+# textos extraidos: son de sus autores, insumo local, NO se publican
+extracted/
+
+# sitio
+site/node_modules/
+site/dist/
+site/.astro/

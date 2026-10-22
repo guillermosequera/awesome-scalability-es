@@ -1,0 +1,29 @@
+[project]
+name = "awesome-scalability-es"
+version = "0.1.0"
+description = "Traduccion al espanol e indice navegable de awesome-scalability"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx[http2]>=0.27",
+    "trafilatura>=2.0",
+    "playwright>=1.48",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+# Esto no es una libreria, son scripts sueltos: nada que empaquetar.
+# Sin esta linea setuptools confunde data/ y extracted/ con paquetes.
+[tool.setuptools]
+py-modules = []
+
+[tool.pytest.ini_options]
+testpaths = ["scripts/tests"]
