@@ -97,6 +97,71 @@ class DomainPacer:
             self.last[d] = time.monotonic()
 
 
+class Store:
+    """Persistencia incremental: cada texto se guarda en cuanto se obtiene.
+
+    El corpus completo tarda horas. Si el guardado ocurriera solo al final, una
+    interrupcion a mitad tiraria todo el trabajo a la basura. Aqui cada enlace
+    resuelto se escribe en el acto y el manifiesto se vuelca cada FLUSH_EVERY
+    registros, de modo que Ctrl+C cuesta como maximo unos pocos enlaces.
+    """
+
+    FLUSH_EVERY = 10
+
+    def __init__(self, out_dir: Path):
+        self.out_dir = out_dir
+        self.path = out_dir / "_manifest.json"
+        self.records: dict[str, dict] = {}
+        self.dirty = 0
+        if self.path.exists():
+            try:
+                for m in json.loads(self.path.read_text(encoding="utf-8")):
+                    self.records[m["slug"]] = m
+            except (json.JSONDecodeError, KeyError):
+                print("  ! manifiesto ilegible, se empieza uno nuevo",
+                      file=sys.stderr)
+
+    def chars_of(self, slug: str) -> int:
+        return self.records.get(slug, {}).get("chars", 0)
+
+    def save(self, rec: dict, src: dict | None = None) -> None:
+        """Guarda un resultado si mejora lo que ya habia para ese enlace."""
+        slug = rec["slug"]
+        if rec["chars"] < self.chars_of(slug) and slug in self.records:
+            return  # un intento anterior consiguio mas texto: se respeta
+        src = src or {}
+        status = classify(rec)
+        if status == "ok":
+            (self.out_dir / f"{slug}.txt").write_text(rec["text"], encoding="utf-8")
+        self.records[slug] = {
+            "slug": slug, "title": rec["title"], "url": rec["url"],
+            "section": src.get("section", self.records.get(slug, {}).get("section", "")),
+            "path": src.get("path", self.records.get(slug, {}).get("path", [])),
+            "status": status, "method": rec["method"], "chars": rec["chars"],
+            "http_status": rec["http_status"], "final_url": rec["final_url"],
+            "archive_url": rec.get("archive_url"),
+            "archive_timestamp": rec.get("archive_timestamp"),
+            "error": rec["error"], "extracted_at": now(),
+        }
+        self.dirty += 1
+        if self.dirty >= self.FLUSH_EVERY:
+            self.flush()
+
+    def flush(self) -> None:
+        if not self.dirty:
+            return
+        data = sorted(self.records.values(), key=lambda m: m["slug"])
+        # Escritura atomica: un Ctrl+C a medias no debe dejar JSON truncado.
+        tmp = self.path.with_suffix(".json.tmp")
+        tmp.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                       encoding="utf-8")
+        tmp.replace(self.path)
+        self.dirty = 0
+
+    def solved(self) -> set[str]:
+        return {s for s, m in self.records.items() if m["chars"] >= MIN_CHARS}
+
+
 # --------------------------------------------------------------------------- #
 # Pasada 1: HTTP plano
 # --------------------------------------------------------------------------- #
@@ -120,22 +185,26 @@ async def fetch_http(client: httpx.AsyncClient, entry: dict, pacer: DomainPacer,
         return rec
 
 
-async def pass_http(entries: list[dict], concurrency: int) -> list[dict]:
+async def pass_http(entries: list[dict], concurrency: int, store: Store) -> list[dict]:
     pacer = DomainPacer(HTTP_DOMAIN_DELAY)
     sem = asyncio.Semaphore(concurrency)
     limits = httpx.Limits(max_connections=concurrency * 2)
     headers = {"User-Agent": UA_HTTP, "Accept-Language": "en-US,en;q=0.9"}
+    by_slug = {e["slug"]: e for e in entries}
     out: list[dict] = []
     async with httpx.AsyncClient(timeout=HTTP_TIMEOUT, follow_redirects=True,
                                  headers=headers, limits=limits) as client:
         tasks = [fetch_http(client, e, pacer, sem) for e in entries]
         done = 0
         for coro in asyncio.as_completed(tasks):
-            out.append(await coro)
+            rec = await coro
+            store.save(rec, by_slug.get(rec["slug"]))
+            out.append({**rec, "text": ""})  # el texto ya esta en disco
             done += 1
             if done % 25 == 0 or done == len(tasks):
                 ok = sum(1 for r in out if r["chars"] >= MIN_CHARS)
                 print(f"  http {done}/{len(tasks)}  utiles={ok}", flush=True)
+    store.flush()
     return out
 
 
@@ -143,7 +212,7 @@ async def pass_http(entries: list[dict], concurrency: int) -> list[dict]:
 # Pasada 2: navegador real
 # --------------------------------------------------------------------------- #
 
-def pass_browser(pending: list[dict]) -> list[dict]:
+def pass_browser(pending: list[dict], store: Store) -> list[dict]:
     """Segunda pasada con navegador real, con cola y enfriamiento por dominio.
 
     Clave aprendida midiendo: un 403 de Medium casi nunca es un bloqueo
@@ -205,7 +274,8 @@ def pass_browser(pending: list[dict]) -> list[dict]:
                 page.close()
 
             if rec["chars"] >= MIN_CHARS:
-                out.append(rec)
+                store.save(rec, entry)
+                out.append({**rec, "text": ""})
                 print(f"  nav {n}/{total} ok  {rec['chars']:>6}ch  {d}", flush=True)
                 continue
 
@@ -217,11 +287,13 @@ def pass_browser(pending: list[dict]) -> list[dict]:
                 print(f"  nav {n}/{total} .. {rec['chars']:>6}ch  {d}  "
                       f"reencolado, espera {delay[d]:.0f}s", flush=True)
             else:
-                out.append(rec)
+                store.save(rec, entry)
+                out.append({**rec, "text": ""})
                 print(f"  nav {n}/{total} XX {rec['chars']:>6}ch  {d}  agotado",
                       flush=True)
 
         browser.close()
+    store.flush()
     return out
 
 
@@ -229,7 +301,7 @@ def pass_browser(pending: list[dict]) -> list[dict]:
 # Pasada 3: Wayback Machine
 # --------------------------------------------------------------------------- #
 
-def pass_wayback(pending: list[dict]) -> list[dict]:
+def pass_wayback(pending: list[dict], store: Store) -> list[dict]:
     """Ultimo recurso: el texto archivado en la Wayback Machine.
 
     Resuelve justo lo que el navegador no puede: dominios que bloquean de forma
@@ -277,12 +349,14 @@ def pass_wayback(pending: list[dict]) -> list[dict]:
             except Exception as exc:
                 rec["error"] = f"{type(exc).__name__}: {exc}"[:200]
 
-            out.append(rec)
+            store.save(rec, entry)
+            out.append({**rec, "text": ""})
             mark = "ok" if rec["chars"] >= MIN_CHARS else "XX"
             snap_info = rec["archive_timestamp"][:8] if rec["archive_timestamp"] else "-"
             print(f"  arch {n}/{len(pending)} {mark} {rec['chars']:>6}ch  "
                   f"snap={snap_info}  {domain(url)}", flush=True)
             time.sleep(WAYBACK_DELAY)
+    store.flush()
     return out
 
 
@@ -365,6 +439,7 @@ def main() -> int:
 
     out_dir = ROOT / args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
+    store = Store(out_dir)
     entries = load_entries(args)
 
     skipped: list[dict] = []
@@ -399,71 +474,47 @@ def main() -> int:
     if args.limit is not None:
         entries = entries[:args.limit]
 
+    for sk in skipped:
+        if sk["slug"] not in store.records:
+            store.records[sk["slug"]] = sk
+            store.dirty += 1
+
     if not entries:
         print("nada que extraer")
-        # Aun sin trabajo nuevo, --bundle debe poder rearmar los lotes
-        # a partir de lo que ya hay en el manifiesto.
-        mpath = out_dir / "_manifest.json"
-        if args.bundle and mpath.exists():
-            existing = json.loads(mpath.read_text(encoding="utf-8"))
+        store.flush()
+        # Aun sin trabajo nuevo, --bundle debe poder rearmar los lotes.
+        if args.bundle and store.records:
+            existing = sorted(store.records.values(), key=lambda m: m["slug"])
             n = write_bundles(out_dir, existing, args.bundle)
             print(f"{n} lotes regenerados en {out_dir.name}/bundles/")
         return 0
 
-    t0 = time.monotonic()
-    print(f"\n== pasada 1: HTTP plano sobre {len(entries)} enlaces ==")
-    recs = asyncio.run(pass_http(entries, args.concurrency))
-
     by_slug = {e["slug"]: e for e in entries}
-    good = {r["slug"] for r in recs if r["chars"] >= MIN_CHARS}
-    pending = [by_slug[r["slug"]] for r in recs if r["slug"] not in good]
+    t0 = time.monotonic()
+    try:
+        print(f"\n== pasada 1: HTTP plano sobre {len(entries)} enlaces ==")
+        asyncio.run(pass_http(entries, args.concurrency, store))
+        solved = store.solved()
+        pending = [e for e in entries if e["slug"] not in solved]
 
-    def merge(results: list[dict]) -> None:
-        """Nos queda el mejor intento de cada enlace, venga de donde venga."""
-        for r in results:
-            prev = next((x for x in recs if x["slug"] == r["slug"]), None)
-            if prev is None or r["chars"] > prev["chars"]:
-                if prev is not None:
-                    recs.remove(prev)
-                recs.append(r)
+        if pending and not args.no_browser:
+            print(f"\n== pasada 2: navegador sobre {len(pending)} que fallaron ==")
+            pass_browser(pending, store)
+            solved = store.solved()
+            pending = [e for e in pending if e["slug"] not in solved]
 
-    if pending and not args.no_browser:
-        print(f"\n== pasada 2: navegador sobre {len(pending)} que fallaron ==")
-        merge(pass_browser(pending))
-        good = {r["slug"] for r in recs if r["chars"] >= MIN_CHARS}
-        pending = [by_slug[s] for s in by_slug if s not in good]
+        if pending and not args.no_wayback:
+            print(f"\n== pasada 3: Wayback sobre {len(pending)} que siguen sin texto ==")
+            pass_wayback(pending, store)
+    except KeyboardInterrupt:
+        store.flush()
+        print("\n! interrumpido. Lo extraido hasta ahora queda guardado: relanza "
+              "el mismo comando para continuar donde iba.", file=sys.stderr)
+        return 130
+    finally:
+        store.flush()
 
-    if pending and not args.no_wayback:
-        print(f"\n== pasada 3: Wayback sobre {len(pending)} que siguen sin texto ==")
-        merge(pass_wayback(pending))
-
-    manifest: list[dict] = []
-    for r in recs:
-        src = by_slug.get(r["slug"], {})
-        status = classify(r)
-        if status == "ok":
-            (out_dir / f"{r['slug']}.txt").write_text(r["text"], encoding="utf-8")
-        manifest.append({
-            "slug": r["slug"], "title": r["title"], "url": r["url"],
-            "section": src.get("section", ""), "path": src.get("path", []),
-            "status": status, "method": r["method"], "chars": r["chars"],
-            "http_status": r["http_status"], "final_url": r["final_url"],
-            "archive_url": r.get("archive_url"),
-            "archive_timestamp": r.get("archive_timestamp"),
-            "error": r["error"], "extracted_at": now(),
-        })
-
-    mpath = out_dir / "_manifest.json"
-    if mpath.exists() and not args.force:
-        merged = {m["slug"]: m for m in json.loads(mpath.read_text(encoding="utf-8"))}
-        merged.update({m["slug"]: m for m in manifest})
-        manifest = list(merged.values())
-    for s in skipped:
-        if not any(m["slug"] == s["slug"] for m in manifest):
-            manifest.append(s)
-    manifest.sort(key=lambda m: m["slug"])
-    mpath.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-                     encoding="utf-8")
+    manifest = sorted(store.records.values(), key=lambda m: m["slug"])
 
     if args.bundle:
         n = write_bundles(out_dir, manifest, args.bundle)
@@ -478,7 +529,7 @@ def main() -> int:
         if tally[k]:
             print(f"  {k:<8} {tally[k]:>4}")
     print(f"  {chars / 1_000_000:.2f}M caracteres en {out_dir.name}/")
-    print(f"  manifiesto: {mpath.relative_to(ROOT)}")
+    print(f"  manifiesto: {store.path.relative_to(ROOT)}")
     return 0
 
 
