@@ -60,8 +60,10 @@ SKIP_KINDS = {"video", "pdf", "slides"}
 BLOCK_ASSETS = "**/*.{png,jpg,jpeg,gif,webp,svg,woff,woff2,ttf,mp4,avi}"
 
 WAYBACK_CDX = "https://web.archive.org/cdx/search/cdx"
-WAYBACK_SNAPSHOTS = 4    # cuantos snapshots probar por URL
-WAYBACK_DELAY = 2.0      # archive.org responde 429 con facilidad
+WAYBACK_SNAPSHOTS = 4       # cuantos snapshots probar por URL
+WAYBACK_DELAY = 2.0         # archive.org responde 429 con facilidad
+WAYBACK_CDX_RETRIES = 3
+WAYBACK_THROTTLE_WAIT = 20.0  # espera base cuando nos devuelve 429
 
 
 def now() -> str:
@@ -301,6 +303,37 @@ def pass_browser(pending: list[dict], store: Store) -> list[dict]:
 # Pasada 3: Wayback Machine
 # --------------------------------------------------------------------------- #
 
+def cdx_snapshots(c: httpx.Client, url: str) -> tuple[list, bool]:
+    """Snapshots de una URL via CDX. Devuelve (filas, nos_frenaron).
+
+    archive.org responde 429 cuando se le consulta en volumen. Tratar ese 429
+    como 'no esta archivado' es el error que hizo fracasar la corrida del
+    2026-10-22: 40 enlaces se dieron por irrecuperables sin estarlo. Aqui se
+    reintenta con espera creciente y, si persiste, se informa del frenazo para
+    que el enlace vuelva a intentarse en otra corrida.
+    """
+    for attempt in range(WAYBACK_CDX_RETRIES + 1):
+        try:
+            r = c.get(WAYBACK_CDX, params={
+                "url": url, "output": "json", "filter": "statuscode:200",
+                "fl": "timestamp", "limit": str(-WAYBACK_SNAPSHOTS)})
+        except Exception:
+            time.sleep(WAYBACK_DELAY * (attempt + 1))
+            continue
+        if r.status_code == 200:
+            try:
+                return r.json()[1:], False
+            except json.JSONDecodeError:
+                return [], False
+        if r.status_code in (429, 503):
+            if attempt < WAYBACK_CDX_RETRIES:
+                time.sleep(WAYBACK_THROTTLE_WAIT * (attempt + 1))
+                continue
+            return [], True
+        return [], False
+    return [], True
+
+
 def pass_wayback(pending: list[dict], store: Store) -> list[dict]:
     """Ultimo recurso: el texto archivado en la Wayback Machine.
 
@@ -324,11 +357,12 @@ def pass_wayback(pending: list[dict], store: Store) -> list[dict]:
                    "final_url": None, "error": None, "text": "",
                    "archive_url": None, "archive_timestamp": None}
             try:
-                r = c.get(WAYBACK_CDX, params={
-                    "url": url, "output": "json", "filter": "statuscode:200",
-                    "fl": "timestamp", "limit": str(-WAYBACK_SNAPSHOTS)})
-                rows = r.json()[1:] if r.status_code == 200 else []
-                if not rows:
+                rows, throttled = cdx_snapshots(c, url)
+                if throttled:
+                    # Distinguir "no esta archivado" de "archive.org nos frena"
+                    # importa: lo primero es definitivo, lo segundo se reintenta.
+                    rec["error"] = "wayback 429: reintentar mas tarde"
+                elif not rows:
                     rec["error"] = "sin snapshot en Wayback"
                 else:
                     # De mas antiguo a mas nuevo.
