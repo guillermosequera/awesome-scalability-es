@@ -1,0 +1,437 @@
+[
+  {
+    "line": 48,
+    "reason": "autor_no_deducible",
+    "title": "Principles of Chaos Engineering"
+  },
+  {
+    "line": 49,
+    "reason": "autor_no_deducible",
+    "title": "Finding the Order in Chaos"
+  },
+  {
+    "line": 50,
+    "reason": "autor_no_deducible",
+    "title": "The Twelve-Factor App"
+  },
+  {
+    "line": 51,
+    "reason": "autor_no_deducible",
+    "title": "Clean Architecture"
+  },
+  {
+    "line": 52,
+    "reason": "autor_no_deducible",
+    "title": "High Cohesion and Low Coupling"
+  },
+  {
+    "line": 53,
+    "reason": "autor_no_deducible",
+    "title": "Monoliths and Microservices"
+  },
+  {
+    "line": 54,
+    "reason": "autor_no_deducible",
+    "title": "CAP Theorem and Trade-offs"
+  },
+  {
+    "line": 55,
+    "reason": "autor_no_deducible",
+    "title": "CP Databases and AP Databases"
+  },
+  {
+    "line": 56,
+    "reason": "autor_no_deducible",
+    "title": "Stateless vs Stateful Scalability"
+  },
+  {
+    "line": 57,
+    "reason": "autor_no_deducible",
+    "title": "Scale Up vs Scale Out: Hidden Costs"
+  },
+  {
+    "line": 58,
+    "reason": "autor_no_deducible",
+    "title": "ACID and BASE"
+  },
+  {
+    "line": 59,
+    "reason": "autor_no_deducible",
+    "title": "Blocking/Non-Blocking and Sync/Async"
+  },
+  {
+    "line": 60,
+    "reason": "autor_no_deducible",
+    "title": "Performance and Scalability of Databases"
+  },
+  {
+    "line": 61,
+    "reason": "autor_no_deducible",
+    "title": "Database Isolation Levels and Effects on Performance and Scalability"
+  },
+  {
+    "line": 62,
+    "reason": "autor_no_deducible",
+    "title": "The Probability of Data Loss in Large Clusters"
+  },
+  {
+    "line": 63,
+    "reason": "autor_no_deducible",
+    "title": "Data Access for Highly-Scalable Solutions: Using SQL, NoSQL, and Polyglot Persistence"
+  },
+  {
+    "line": 64,
+    "reason": "autor_no_deducible",
+    "title": "SQL vs NoSQL"
+  },
+  {
+    "line": 66,
+    "reason": "autor_no_deducible",
+    "title": "NoSQL Databases: Survey and Decision Guidance"
+  },
+  {
+    "line": 67,
+    "reason": "autor_no_deducible",
+    "title": "How Sharding Works"
+  },
+  {
+    "line": 68,
+    "reason": "autor_no_deducible",
+    "title": "Consistent Hashing"
+  },
+  {
+    "line": 69,
+    "reason": "autor_no_deducible",
+    "title": "Consistent Hashing: Algorithmic Tradeoffs"
+  },
+  {
+    "line": 70,
+    "reason": "autor_no_deducible",
+    "title": "Don’t be tricked by the Hashing Trick"
+  },
+  {
+    "line": 73,
+    "reason": "autor_no_deducible",
+    "title": "Cache is King"
+  },
+  {
+    "line": 74,
+    "reason": "autor_no_deducible",
+    "title": "Anti-Caching"
+  },
+  {
+    "line": 75,
+    "reason": "autor_no_deducible",
+    "title": "Understand Latency"
+  },
+  {
+    "line": 76,
+    "reason": "autor_no_deducible",
+    "title": "Latency Numbers Every Programmer Should Know"
+  },
+  {
+    "line": 77,
+    "reason": "autor_no_deducible",
+    "title": "The Calculus of Service Availability"
+  },
+  {
+    "line": 78,
+    "reason": "autor_no_deducible",
+    "title": "Architecture Issues When Scaling Web Applications: Bottlenecks, Database, CPU, IO"
+  },
+  {
+    "line": 79,
+    "reason": "autor_no_deducible",
+    "title": "Common Bottlenecks"
+  },
+  {
+    "line": 80,
+    "reason": "autor_no_deducible",
+    "title": "Life Beyond Distributed Transactions"
+  },
+  {
+    "line": 82,
+    "reason": "autor_no_deducible",
+    "title": "Breaking Things on Purpose"
+  },
+  {
+    "line": 83,
+    "reason": "autor_no_deducible",
+    "title": "Avoid Over Engineering"
+  },
+  {
+    "line": 84,
+    "reason": "autor_no_deducible",
+    "title": "Scalability Worst Practices"
+  },
+  {
+    "line": 86,
+    "reason": "autor_no_deducible",
+    "title": "Simplicity by Distributing Complexity"
+  },
+  {
+    "line": 87,
+    "reason": "autor_no_deducible",
+    "title": "Why Over-Reusing is Bad"
+  },
+  {
+    "line": 88,
+    "reason": "autor_no_deducible",
+    "title": "Performance is a Feature"
+  },
+  {
+    "line": 89,
+    "reason": "autor_no_deducible",
+    "title": "Make Performance Part of Your Workflow"
+  },
+  {
+    "line": 90,
+    "reason": "autor_no_deducible",
+    "title": "The Benefits of Server Side Rendering over Client Side Rendering"
+  },
+  {
+    "line": 92,
+    "reason": "autor_no_deducible",
+    "title": "AWS Do's and Don'ts"
+  },
+  {
+    "line": 94,
+    "reason": "autor_no_deducible",
+    "title": "Linux Performance"
+  },
+  {
+    "line": 96,
+    "reason": "autor_no_deducible",
+    "title": "Accept Partial Failures, Minimize Service Loss"
+  },
+  {
+    "line": 97,
+    "reason": "autor_no_deducible",
+    "title": "Design for Resiliency"
+  },
+  {
+    "line": 98,
+    "reason": "autor_no_deducible",
+    "title": "Design for Self-healing"
+  },
+  {
+    "line": 99,
+    "reason": "autor_no_deducible",
+    "title": "Design for Scaling Out"
+  },
+  {
+    "line": 100,
+    "reason": "autor_no_deducible",
+    "title": "Design for Evolution"
+  },
+  {
+    "line": 101,
+    "reason": "autor_no_deducible",
+    "title": "Learn from Mistakes"
+  },
+  {
+    "line": 286,
+    "reason": "autor_no_deducible",
+    "title": "Scaling Event Sourcing for Netflix Downloads"
+  },
+  {
+    "line": 314,
+    "reason": "autor_no_deducible",
+    "title": "Exactly-once Semantics with Kafka"
+  },
+  {
+    "line": 351,
+    "reason": "autor_no_deducible",
+    "title": "Galene: Search Architecture of LinkedIn"
+  },
+  {
+    "line": 373,
+    "reason": "autor_no_deducible",
+    "title": "Real-Time Data Warehouse with MemSQL on Cisco UCS"
+  },
+  {
+    "line": 458,
+    "reason": "autor_no_deducible",
+    "title": "HBase in Facebook Messages"
+  },
+  {
+    "line": 459,
+    "reason": "autor_no_deducible",
+    "title": "HBase in Imgur Notification"
+  },
+  {
+    "line": 467,
+    "reason": "autor_no_deducible",
+    "title": "eBay: Building Mission-Critical Multi-Data Center Applications with MongoDB"
+  },
+  {
+    "line": 468,
+    "reason": "autor_no_deducible",
+    "title": "MongoDB at Baidu: Multi-Tenant Cluster Storing 200+ Billion Documents across 160 Shards"
+  },
+  {
+    "line": 470,
+    "reason": "autor_no_deducible",
+    "title": "The AWS and MongoDB Infrastructure of Parse (acquired by Facebook)"
+  },
+  {
+    "line": 533,
+    "reason": "autor_no_deducible",
+    "title": "The Evolution of Global Traffic Routing and Failover"
+  },
+  {
+    "line": 534,
+    "reason": "autor_no_deducible",
+    "title": "Testing for Disaster Recovery Failover Testing"
+  },
+  {
+    "line": 535,
+    "reason": "autor_no_deducible",
+    "title": "Designing a Microservices Architecture for Failure"
+  },
+  {
+    "line": 544,
+    "reason": "autor_no_deducible",
+    "title": "Introduction to Modern Network Load Balancing and Proxying"
+  },
+  {
+    "line": 545,
+    "reason": "autor_no_deducible",
+    "title": "Top Five (Load Balancing) Scalability Patterns"
+  },
+  {
+    "line": 573,
+    "reason": "autor_no_deducible",
+    "title": "Autoscaling Pinterest"
+  },
+  {
+    "line": 585,
+    "reason": "autor_no_deducible",
+    "title": "Monitoring Powers High Availability for LinkedIn Feed"
+  },
+  {
+    "line": 596,
+    "reason": "autor_no_deducible",
+    "title": "Circuit Breaking in Distributed Systems"
+  },
+  {
+    "line": 597,
+    "reason": "autor_no_deducible",
+    "title": "Circuit Breaker for Scaling Containers"
+  },
+  {
+    "line": 609,
+    "reason": "autor_no_deducible",
+    "title": "Bulkheads: Partition and Tolerate Failure in One Part"
+  },
+  {
+    "line": 610,
+    "reason": "autor_no_deducible",
+    "title": "Steady State: Always Put Logs on Separate Disk"
+  },
+  {
+    "line": 611,
+    "reason": "autor_no_deducible",
+    "title": "Throttling: Maintain a Steady Pace"
+  },
+  {
+    "line": 613,
+    "reason": "autor_no_deducible",
+    "title": "Determinism (4 parts) in League of Legends Server"
+  },
+  {
+    "line": 839,
+    "reason": "autor_no_deducible",
+    "title": "Architecture of Evernote"
+  },
+  {
+    "line": 841,
+    "reason": "autor_no_deducible",
+    "title": "Architecture of League of Legends Client Update"
+  },
+  {
+    "line": 845,
+    "reason": "autor_no_deducible",
+    "title": "Basic Architecture of Slack"
+  },
+  {
+    "line": 876,
+    "reason": "autor_no_deducible",
+    "title": "Architecture of Nubank"
+  },
+  {
+    "line": 888,
+    "reason": "autor_no_deducible",
+    "title": "Introduction to Architecting Systems for Scale"
+  },
+  {
+    "line": 889,
+    "reason": "autor_no_deducible",
+    "title": "Anatomy of a System Design Interview"
+  },
+  {
+    "line": 890,
+    "reason": "autor_no_deducible",
+    "title": "8 Things You Need to Know Before a System Design Interview"
+  },
+  {
+    "line": 891,
+    "reason": "autor_no_deducible",
+    "title": "Top 10 System Design Interview Questions"
+  },
+  {
+    "line": 892,
+    "reason": "autor_no_deducible",
+    "title": "Top 10 Common Large-Scale Software Architectural Patterns in a Nutshell"
+  },
+  {
+    "line": 894,
+    "reason": "autor_no_deducible",
+    "title": "How NOT to design Netflix in your 45-minute System Design Interview?"
+  },
+  {
+    "line": 895,
+    "reason": "autor_no_deducible",
+    "title": "API Best Practices: Webhooks, Deprecation, and Design"
+  },
+  {
+    "line": 897,
+    "reason": "autor_no_deducible",
+    "title": "The Precise Meaning of I/O Wait Time in Linux"
+  },
+  {
+    "line": 898,
+    "reason": "autor_no_deducible",
+    "title": "Paxos Made Live – An Engineering Perspective"
+  },
+  {
+    "line": 899,
+    "reason": "autor_no_deducible",
+    "title": "How to do Distributed Locking"
+  },
+  {
+    "line": 900,
+    "reason": "autor_no_deducible",
+    "title": "SQL Transaction Isolation Levels Explained"
+  },
+  {
+    "line": 902,
+    "reason": "autor_no_deducible",
+    "title": "Netflix: What Happens When You Press Play?"
+  },
+  {
+    "line": 903,
+    "reason": "autor_no_deducible",
+    "title": "Monzo: How Peer-To-Peer Payments Work"
+  },
+  {
+    "line": 904,
+    "reason": "autor_no_deducible",
+    "title": "Transit and Peering: How Your Requests Reach GitHub"
+  },
+  {
+    "line": 905,
+    "reason": "autor_no_deducible",
+    "title": "How Spotify Streams Music"
+  }
+]

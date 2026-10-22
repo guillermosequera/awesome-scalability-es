@@ -1,0 +1,63 @@
+# Traducción de los 55 nodos de taxonomía del README (los ítems que agrupan
+# artículos). Los nombres propios de tecnologías NO se traducen: solo su
+# descripción. Cassandra sigue siendo Cassandra.
+#
+# Los 864 títulos de artículo no están aquí a propósito: son nombres de
+# publicaciones y se copian tal cual.
+
+nodes:
+  '"What Happens When... and How" Questions': 'Preguntas de "qué pasa cuando… y cómo"'
+  Airflow - Workflow Orchestration: Airflow — orquestación de flujos de trabajo
+  Architectures of Finance, Banking, and Payment Systems: Arquitecturas de sistemas financieros, bancarios y de pagos
+  Autoscaling: Autoescalado
+  Big Data: Big data
+  Cassandra: Cassandra
+  Circuit Breaker: Circuit breaker (cortacircuitos)
+  Code Review: Revisión de código
+  Columnar Databases: Bases de datos columnares
+  Designing Large-Scale Systems: Diseño de sistemas a gran escala
+  Distributed Caching: Caching distribuido
+  Distributed Locking: Bloqueo distribuido
+  Distributed Logging: Registro de logs distribuido
+  Distributed Machine Learning: Aprendizaje automático distribuido
+  Distributed Messaging, Queuing, and Event Streaming: Mensajería, colas y streaming de eventos distribuidos
+  Distributed Monitoring and Alerting: Monitorización y alertas distribuidas
+  Distributed Repositories, Dependencies, and Configurations Management: Gestión distribuida de repositorios, dependencias y configuración
+  Distributed Scheduling: Planificación distribuida
+  Distributed Searching: Búsqueda distribuida
+  Distributed Security: Seguridad distribuida
+  Distributed Storage: Almacenamiento distribuido
+  Distributed Tracking, Tracing, and Measuring: Seguimiento, trazas y medición distribuidos
+  Document Databases: Bases de datos documentales
+  Druid - Real-time Analytics Database: Druid — base de datos analítica en tiempo real
+  ELK (Elasticsearch, Logstash, Kibana) Stack: Stack ELK (Elasticsearch, Logstash, Kibana)
+  Event-Driven Messaging: Mensajería dirigida por eventos
+  Explaining Low-Level Systems (OS, Network/Protocol, Database, Storage): Sistemas de bajo nivel explicados (SO, red y protocolos, bases de datos, almacenamiento)
+  Failover: Failover (conmutación por error)
+  Graph Databases: Bases de datos de grafos
+  HBase: HBase
+  HTTP Caching and CDN: Caching HTTP y CDN
+  In-memory Storage: Almacenamiento en memoria
+  Kafka - Message Broker: Kafka — broker de mensajes
+  Key-Value Databases: Bases de datos clave-valor
+  Load Balancing: Balanceo de carga
+  Microservices and Orchestration: Microservicios y orquestación
+  NoSQL Databases: Bases de datos NoSQL
+  Object Storage: Almacenamiento de objetos
+  Performance Optimization by Brotli Compression: Optimización del rendimiento con compresión Brotli
+  Performance Optimization by Tuning Garbage Collection: Optimización del rendimiento ajustando el recolector de basura
+  Performance Optimization on Image, Video, Page Load: Optimización del rendimiento en imagen, vídeo y carga de página
+  Performance Optimization on Languages and Frameworks: Optimización del rendimiento en lenguajes y frameworks
+  Performance Optimization on OS, Storage, Database, Network: Optimización del rendimiento en SO, almacenamiento, bases de datos y red
+  Presto the Distributed SQL Query Engine: Presto, el motor distribuido de consultas SQL
+  Pub-Sub Messaging: Mensajería pub-sub
+  Rate Limiting: Limitación de tasa (rate limiting)
+  Redshift: Redshift
+  Relational Databases: Bases de datos relacionales
+  Replication: Replicación
+  'Resilience Engineering: Learning to Embrace Failure': 'Ingeniería de resiliencia: aprender a abrazar el fallo'
+  Scaling Continuous Integration and Continuous Delivery: Escalar la integración y la entrega continuas
+  Sharding: Sharding (particionado)
+  Stream Data Deduplication: Deduplicación de datos en streaming
+  Time Series Databases: Bases de datos de series temporales
+  Timeouts: Timeouts (tiempos de espera)

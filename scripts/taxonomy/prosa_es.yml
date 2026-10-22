@@ -1,0 +1,80 @@
+# Prosa propia del README traducida. La clave es el texto original EXACTO: si el
+# upstream reescribe un párrafo, la clave deja de coincidir y build_readme_es.py
+# avisa en vez de publicar inglés sin traducir.
+#
+# Las anclas internas ya apuntan a los encabezados en español
+# (#scalability -> #escalabilidad), que es lo que GitHub genera al traducir los
+# títulos de sección.
+
+# Encabezados de nivel ####
+headers:
+  If your system goes slow: Si tu sistema va lento
+  If your system goes down: Si tu sistema se cae
+  If you are having a system design interview: Si tienes una entrevista de diseño de sistemas
+  If you are building your dream team: Si estás formando el equipo de tus sueños
+  Community power: La fuerza de la comunidad
+
+# Párrafos y citas, por texto original exacto
+blocks:
+  "An updated and organized reading list for illustrating the patterns of scalable, reliable, and performant large-scale systems. Concepts are explained in the articles of prominent engineers and credible references. Case studies are taken from battle-tested systems that serve millions to billions of users.":
+    "Una lista de lectura actualizada y organizada que ilustra los patrones de los sistemas
+    a gran escala: escalables, fiables y de alto rendimiento. Los conceptos se explican en
+    artículos de ingenieros destacados y referencias solventes. Los casos de estudio salen
+    de sistemas curtidos en producción que sirven a millones o miles de millones de
+    usuarios."
+
+  "> Understand your problems: scalability problem (fast for a single user but slow under heavy load) or performance problem (slow for a single user) by reviewing some [design principles](#principle) and checking how [scalability](#scalability) and [performance](#performance) problems are solved at tech companies. The section of [intelligence](#intelligence) are created for those who work with data and machine learning at big (data) and deep (learning) scale.":
+    "> Entiende tu problema: ¿es de escalabilidad (rápido para un solo usuario pero lento
+    bajo carga) o de rendimiento (lento incluso para un solo usuario)? Repasa algunos
+    [principios de diseño](#principios) y mira cómo se resuelven los problemas de
+    [escalabilidad](#escalabilidad) y [rendimiento](#rendimiento) en las empresas
+    tecnológicas. La sección de [inteligencia](#inteligencia) está pensada para quienes
+    trabajan con datos y aprendizaje automático a gran escala (big data) y en profundidad
+    (deep learning)."
+
+  "> \"Even if you lose all one day, you can build all over again if you retain your calm!\" - Thuan Pham, former CTO of Uber. So, keep calm and mind the [availability](#availability) and [stability](#stability) matters!":
+    "> «Aunque lo pierdas todo un día, puedes reconstruirlo desde cero si conservas la
+    calma» — Thuan Pham, ex-CTO de Uber. Así que mantén la calma y atiende a la
+    [disponibilidad](#disponibilidad) y a la [estabilidad](#estabilidad)."
+
+  "> Look at some [interview notes](#interview) and [real-world architectures with completed diagrams](#architecture) to get a comprehensive view before designing your system on whiteboard. You can check some [talks](#talk) of engineers from tech giants to know how they build, scale, and optimize their systems. Good luck!":
+    "> Échale un ojo a unas [notas de entrevista](#entrevistas) y a [arquitecturas reales
+    con sus diagramas](#arquitectura) para hacerte una idea completa antes de diseñar tu
+    sistema en la pizarra. También puedes ver [charlas](#charlas) de ingenieros de las
+    grandes tecnológicas para saber cómo construyen, escalan y optimizan sus sistemas.
+    ¡Suerte!"
+
+  "> The goal of scaling team is not growing team size but increasing team output and value. You can find out how tech companies reach that goal in various aspects: hiring, management, organization, culture, and communication in the [organization](#organization) section.":
+    "> Escalar un equipo no consiste en aumentar su tamaño, sino su producción y su valor.
+    En la sección de [organización](#organización) puedes ver cómo lo consiguen las
+    empresas tecnológicas en distintos frentes: contratación, gestión, organización,
+    cultura y comunicación."
+
+  "> Contributions are greatly welcome! You may want to take a look at the [contribution guidelines](CONTRIBUTING.md). If you see a link here that is no longer maintained or is not a good fit, please submit a pull request!":
+    "> ¡Las contribuciones son más que bienvenidas! Quizá quieras echar un ojo a las
+    [pautas de contribución](CONTRIBUTING.md). Si ves aquí un enlace que ya no se mantiene
+    o que no encaja, manda un pull request."
+
+  "> Many long hours of hard work have gone into this project. If you find it helpful, please share on Facebook, [on Twitter](https://ctt.ec/V8B2p), [on Weibo](http://t.cn/RnjFLCB), or on your chat groups! Knowledge is power, knowledge shared is power multiplied. Thank you!":
+    "> Detrás de este proyecto hay muchísimas horas de trabajo. Si te resulta útil,
+    compártelo en Facebook, [en Twitter](https://ctt.ec/V8B2p), [en Weibo](http://t.cn/RnjFLCB)
+    o en tus grupos de chat. El conocimiento es poder, y el conocimiento compartido es
+    poder multiplicado. ¡Gracias!"
+
+  "Roses are red. Violets are blue. [Binh](https://nguyenquocbinh.org/) likes sweet. [Treat Binh a tiramisu?](https://paypal.me/binhnguyennus) :cake:":
+    "Las rosas son rojas. Las violetas, azules. A [Binh](https://nguyenquocbinh.org/) le
+    gusta el dulce. ¿[Le invitas a un tiramisú?](https://paypal.me/binhnguyennus) :cake:"
+
+# Cabecera que se inserta bajo el logo: selector de idioma y crédito.
+# El selector del README en inglés lo añade el propio script.
+header: |
+  🇬🇧 [English](README.md) · 🇪🇸 **Español**
+
+  > Traducción al español de [awesome-scalability](https://github.com/binhnguyennus/awesome-scalability),
+  > de [Binh Nguyen](https://github.com/binhnguyennus), publicada bajo licencia MIT como la
+  > obra original. Los títulos de los artículos se mantienen en su idioma original porque
+  > son nombres de publicaciones. Todo el crédito del trabajo de curación es suyo.
+
+# Linea equivalente que se inyecta en el README en inglés.
+header_en: |
+  🇬🇧 **English** · 🇪🇸 [Español](README.es.md)

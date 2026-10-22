@@ -1,5 +1,5 @@
-# Traduccion de las secciones de nivel ## del README upstream.
-# Fuente unica para parse_readme.py, README.es.md y el sitio.
+# Traducción de las secciones de nivel ## del README upstream.
+# Fuente única para parse_readme.py, build_readme_es.py y el sitio.
 sections:
   Principle: Principios
   Scalability: Escalabilidad
@@ -9,10 +9,10 @@ sections:
   Intelligence: Inteligencia
   Architecture: Arquitectura
   Interview: Entrevistas
-  Organization: Organizacion
+  Organization: Organización
   Talk: Charlas
   A Piece of Cake: Un trozo de tarta
 
-# Secciones que no contienen enlaces indexables (indice e epilogo).
+# Secciones que no contienen enlaces indexables (índice y epílogo).
 skip:
   - Content
